@@ -33,7 +33,11 @@ const result =	await order.create({
 			}
 			});
 			console.log(result);
-			res.send(result.body);
+
+			//res.send(result.body);////
+			 console.log("INIT POINT 👉", result.init_point);
+
+res.json({init_point: result.init_point});
 			//return	res.redirect(result.init_point);
 			//res.json(result);
 		}
@@ -52,11 +56,27 @@ const failurePago = (req, res) => {
 	res.send('Failure');
 };
 
-const recibeWebhook = (req, res) => {
-	console.log(req.query);
+const recibeWebhook =async (req, res) => {
+const payment = req.query
 
-	res.send('webhook');
+try {
+if (payment.type === 'payment') { 
+    const data = await mercadopago.payment.findById(payment['data.id']);
+    console.log(data);
+	//---- guardar en base de datos el estado del pago (data)---
 }
+res.sendStatus(204);
+} 
+catch (error) {
+console.error(error);
+return res.sendStatus(500).json({error: error.message});
+}
+};
+/*const recibeWebhook = (req, res) => {
+console.log(req.query);
+res.send('webhook');
+}
+*/
 
 module.exports = {
 	crearOrden,
@@ -122,3 +142,10 @@ status: aproved --> guardar en base de datos como pago aprobado
 "volver al sitio" ---> enviar a success
 
  */
+
+/*
+
+
+
+
+*/
