@@ -56,6 +56,8 @@ const failurePago = (req, res) => {
 	res.send('Failure');
 };
 
+
+
 const recibeWebhook =async (req, res) => {
 const payment = req.query
 
@@ -64,6 +66,11 @@ if (payment.type === 'payment') {
     const data = await mercadopago.payment.findById(payment['data.id']);
     console.log(data);
 	//---- guardar en base de datos el estado del pago (data)---
+
+	/*const status = data.body.status;
+	const external_reference = data.body.external_reference;	
+	console.log(`El pago con referencia ${external_reference} tiene el estado: ${status}`);
+*/
 }
 res.sendStatus(204);
 } 
@@ -72,6 +79,8 @@ console.error(error);
 return res.sendStatus(500).json({error: error.message});
 }
 };
+
+
 /*const recibeWebhook = (req, res) => {
 console.log(req.query);
 res.send('webhook');
@@ -109,6 +118,7 @@ los webhooks que manda mercadopago.
 
  30:34
 
+
  agregar mercadpago.payment.findById(req.query['data.id']) para ver el detalle del pago
  pero dentro de un condicional:
 
@@ -128,6 +138,10 @@ try {
 return res.sendStatus(500).json({error: error.message});
 }
 };
+
+36:06
+.\ngrok.exe http 3000
+./ngrok.exe http 3000
 
 
 42:57 
